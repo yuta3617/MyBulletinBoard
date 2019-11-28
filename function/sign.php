@@ -45,8 +45,8 @@ function sign_in($user_name, $user_password, $mysqli) {
 		$_SESSION['user'] = $user_id;
 		echo "<div class='alert alert-success'>
 				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-				ログイン完了</div>";
+				Your login successful!</div>";
 	} else {
-		echo "エラーが発生しました";
+		echo "A fatal error occrured";
 	}
 }
