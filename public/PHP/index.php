@@ -1,10 +1,15 @@
 <?php
 include '../../config/database.php';
+include '../../function/post.php';
 include '../html/header.html';
 include '../html/index.html';
+ob_start();
+session_start();
 ?>
 
 <?php
+$posts_data = fetch_posts($mysqli);
+
 if ( $posts_data !== false ) {
 	foreach ($posts_data as $post_data ) {
 	?>
@@ -28,7 +33,7 @@ if ($_POST) {
 	// 必須項目に情報が入っているかを確認する
 	if ( !empty( $_POST['add_post'] )) {
 		$add_post = $_POST['add_post'];
-		add_post($product_id, $add_post, $mysqli);
+		add_post($add_post, $mysqli);
 	} else {
 		echo "口コミを入力してください";
 	}

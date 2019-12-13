@@ -4,6 +4,8 @@ include '../html/header.html';
 include '../html/signin.html';
 
 include '../../function/sign.php';
+ob_start();
+session_start();
 ?>
 
 <?php
