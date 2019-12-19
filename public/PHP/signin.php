@@ -19,7 +19,9 @@ if ( $_POST ) {
 
 		sign_in($user_name, $user_password, $mysqli);
 	} else {
-		echo "Your sign in are rejected. There're some errors in your input.";
+		echo "<div class='alert alert-warning'>
+			<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+			ERROR : ログインに失敗しました。再試行してください。</div>";
 	}
 }
  ?>

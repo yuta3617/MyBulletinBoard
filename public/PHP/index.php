@@ -1,10 +1,41 @@
 <?php
 include '../../config/database.php';
 include '../../function/post.php';
-include '../html/header.html';
+if(empty($_SESSION['user'])){
+	include '../html/header_signin.html';
+} else{
+	include '../html/header.html';
+}
 include '../html/index.html';
 ob_start();
 session_start();
+?>
+
+<div class="container">
+	<div class="row">
+		 <div class="col-xs-12">
+		 	<h3>投稿する</h3>
+			<form action="" method="post">
+				<textarea name="add_post_text" class="form-control" placeholder="投稿内容"></textarea>
+				<button name="add_post" type="submit" class="btn btn-primary">投稿する</button>
+			</form>
+		 </div>
+	</div>
+</div>
+
+<br><br>
+
+<?php
+if (isset($_POST['add_post'])) {
+	if ( !empty( $_POST['add_post_text'] )) {
+		$add_post = $_POST['add_post_text'];
+		add_post($add_post, $mysqli);
+	} else {
+		echo "<div class='alert alert-warning'>
+		<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+		ERROR : 投稿内容を入力してください</div>";
+	}
+}
 ?>
 
 <?php
@@ -16,41 +47,15 @@ if ( $posts_data !== false ) {
 
 	<div class="col-xs-12">
 		<h4>
-			名前：<?php echo $post_data['user_name']; ?>さん
+			名前：<?php echo $post_data['user_name']; ?>
 			（<?php echo $post_data['post_date']; ?>）
 		</h4>
 		<p><?php echo $post_data['post_comment']; ?></p>
 	</div>
 
-	<?php } // End of foreach ?>
+	<?php } ?>
 
-<?php } // End of if ?>
-
-<?php
-// 口コミの投稿
-if ($_POST) {
-
-	// 必須項目に情報が入っているかを確認する
-	if ( !empty( $_POST['add_post'] )) {
-		$add_post = $_POST['add_post'];
-		add_post($add_post, $mysqli);
-	} else {
-		echo "口コミを入力してください";
-	}
-}
- ?>
-
-<div class="container">
-	<div class="row">
-		 <div class="col-xs-12">
-		 	<h3>口コミを投稿する</h3>
-			<form action="" method="post">
-				<textarea name="add_post" class="form-control" placeholder="口コミを記入してください。"></textarea>
-				<button type="submit" class="btn btn-default">投稿する</button>
-			</form>
-		 </div>
-	</div>
-</div>
+<?php } ?>
 
 <?php
 include '../html/footer.html';
