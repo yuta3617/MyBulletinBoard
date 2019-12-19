@@ -21,10 +21,12 @@ if ( $_POST ) {
 
 			sign_up($user_name, $user_email, $user_password, $mysqli);
 		} else {
-			echo "パスワードが一致しません";
+			echo "確認用パスワードが一致しません。再度入力してください。";
 		}
 	} else {
-		echo "エラーがあります";
+		echo "<div class='alert alert-warning'>
+			<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+			ERROR : アカウントの新規作成に失敗しました。再試行してください。</div>";
 	}
 }
 ?>
