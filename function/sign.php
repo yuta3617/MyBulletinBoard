@@ -18,20 +18,22 @@ function sign_up($user_name,$user_email,$user_password,$mysqli) {
                     )
         ";
     $result = $mysqli->query($query);
+    $_SESSION['message'] = 'アカウントを新規作成しました';
+    header('Location: ../PHP/index.php');
 }
 
-function sign_in($user_name, $user_password, $mysqli) {
-    $user_name = $mysqli->real_escape_string($user_name);
+function sign_in($user_email, $user_password, $mysqli) {
+    $user_email = $mysqli->real_escape_string($user_email);
     $user_password = $mysqli->real_escape_string($user_password);
     
     $query = "SELECT
 					user_id,
-					user_name,
+					user_email,
 					user_password
 				FROM
 					users
 				WHERE
-                    user_name = '$user_name'
+                    user_email = '$user_email'
         ";
     
     $result = $mysqli->query($query);
@@ -42,13 +44,18 @@ function sign_in($user_name, $user_password, $mysqli) {
     }
     
     if (password_verify($user_password, $db_hashed_pwd)) {
-		$_SESSION['user'] = $user_id;
-		echo "<div class='alert alert-success'>
-				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-				SUCCESS : ログインに成功しました</div>";
+        $_SESSION['user'] = $user_id;
+        $_SESSION['message'] = 'ログインしました';
+		header('Location: ../PHP/index.php');
 	} else {
 		echo "<div class='alert alert-warning'>
         <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
         ERROR : ログインに失敗しました</div>";
 	}
+}
+
+function sign_out() {
+    $_SESSION = array();
+    $_SESSION['message'] = 'ログアウトしました';
+    header('Location: ../PHP/index.php');
 }

@@ -21,7 +21,9 @@ if ( $_POST ) {
 
 			sign_up($user_name, $user_email, $user_password, $mysqli);
 		} else {
-			echo "確認用パスワードが一致しません。再度入力してください。";
+			echo "<div class='alert alert-warning'>
+			<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+			ERROR : 確認用パスワードが一致しません。再度入力してください。</div>";
 		}
 	} else {
 		echo "<div class='alert alert-warning'>
