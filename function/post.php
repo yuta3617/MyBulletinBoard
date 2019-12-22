@@ -35,7 +35,7 @@ function fetch_posts($mysqli) {
 	}
 }
 
-function fetch_posts_mypage($user_id,$mysqli) {
+function fetch_user_posts($user_id, $mysqli) {
 	$query ="SELECT
 				posts.post_id,
 				posts.post_comment,
@@ -75,7 +75,7 @@ function fetch_posts_mypage($user_id,$mysqli) {
 
 function add_post($add_post, $mysqli) {
 	$add_post = $mysqli->real_escape_string($add_post);
-	if(!$_SESSION['user']) {
+	if(!isset($_SESSION['user'])) {
 		echo "<div class='alert alert-warning'>
         <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
 		ERROR : 投稿にはログインが必要です</div>";
@@ -100,6 +100,7 @@ function add_post($add_post, $mysqli) {
 			<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
 			ERROR : 投稿に失敗しました</div>";
 		} else {
+			$_SESSION['message'] = '投稿しました';
 			header("Location: " . $_SERVER['PHP_SELF']);
 		}
 	}
@@ -107,21 +108,24 @@ function add_post($add_post, $mysqli) {
 
 function edit_post($post_id, $edit_post, $mysqli) {
 	$edit_post = $mysqli->real_escape_string($edit_post);
+	
 	$query ="UPDATE
 				posts
 			SET
-				posts.post_comment = $edit_post
+				posts.post_comment = '$edit_post'
 			WHERE
 				posts.post_id = $post_id
 			";
 
 	$result = $mysqli->query($query);
+	echo $query;
 
 	if(!$result) {
 		echo "<div class='alert alert-warning'>
 		<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
 		ERROR : 編集に失敗しました</div>";
 	} else {
+		$_SESSION['message'] = '編集しました';
 		header('Location: ../PHP/mypage.php');
 	}
 }
@@ -140,6 +144,7 @@ function delete_post($post_id, $mysqli) {
 		<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
 		ERROR : 削除に失敗しました</div>";
 	} else {
+		$_SESSION['message'] = '削除しました';
 		header('Location: ../PHP/mypage.php');
 	}
 }

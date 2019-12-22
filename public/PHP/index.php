@@ -1,14 +1,22 @@
 <?php
+ob_start();
+session_start();
 include '../../config/database.php';
 include '../../function/post.php';
-if(empty($_SESSION['user'])){
+include '../../function/sign.php';
+if (isset($_SESSION['message'])){
+	$message = $_SESSION['message'];
+	echo "<div class='alert alert-success'>
+		<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+		{$message}</div>";
+	unset($_SESSION['message']);
+}
+if(!empty($_SESSION['user'])){
 	include '../html/header_signin.html';
-} else{
+} else {
 	include '../html/header.html';
 }
 include '../html/index.html';
-ob_start();
-session_start();
 ?>
 
 <div class="container">
@@ -26,6 +34,10 @@ session_start();
 <br><br>
 
 <?php
+if (isset($_POST['sign_out'])) {
+	sign_out();
+}
+
 if (isset($_POST['add_post'])) {
 	if ( !empty( $_POST['add_post_text'] )) {
 		$add_post = $_POST['add_post_text'];
@@ -55,6 +67,10 @@ if ( $posts_data !== false ) {
 
 	<?php } ?>
 
+<?php } else { ?>
+	<div class="col-xs-12">
+		<h4>まだ投稿はありません</h4>
+	</div>
 <?php } ?>
 
 <?php

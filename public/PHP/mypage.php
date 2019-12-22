@@ -1,16 +1,28 @@
 <?php
-include '../../config/database.php';
-include '../../function/post.php';
-include '../html/header_signin.html';
-include '../html/mypage.html';
 ob_start();
 session_start();
+include '../../config/database.php';
+include '../../function/post.php';
+include '../../function/sign.php';
+if (isset($_SESSION['message'])){
+	$message = $_SESSION['message'];
+	echo "<div class='alert alert-success'>
+        <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+		{$message}</div>";
+	unset($_SESSION['message']);
+}
+include '../html/header_signin.html';
+include '../html/mypage.html';
 ?>
 
 <br><br>
 
 <?php
-$posts_data = fetch_posts_mypage($_SESSION['user'],$mysqli);
+if (isset($_POST['sign_out'])) {
+	sign_out();
+}
+
+$posts_data = fetch_user_posts($_SESSION['user'],$mysqli);
 
 if ( $posts_data !== false ) {
 	foreach ($posts_data as $post_data ) {
@@ -27,7 +39,11 @@ if ( $posts_data !== false ) {
 
 	<?php } ?>
 
-<?php } ?>
+<?php } else { ?>
+	<div class="col-xs-12">
+		<h4>まだ投稿はありません</h4>
+	</div>
+	<?php } ?>
 
 <?php
 include '../html/footer.html';
